@@ -3,5 +3,7 @@
 
     <string name="app_name">MAP_Editor</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_editor">Editor</string>
+    <string name="filename">Untitled</string>
 
 </resources>
