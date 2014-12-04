@@ -13,5 +13,6 @@
     <string name="quit_menu_item">Quit</string>
     <string name="save_button">Save</string>
     <string name="cancel_button">Cancel</string>
+    <string name="save_dialog_prompt">Save File As:</string>
 
 </resources>

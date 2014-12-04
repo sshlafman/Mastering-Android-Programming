@@ -3,27 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
-    <EditText
+    
+    <TextView 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text" />
+        android:gravity="center"
+        android:text="@string/save_dialog_prompt"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        />
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/et_filename"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:inputType="text" >
 
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/save_button" />
-
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/cancel_button" />
-    </LinearLayout>
+        <requestFocus />
+    </EditText>
 
 </LinearLayout>

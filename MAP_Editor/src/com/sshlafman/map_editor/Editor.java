@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,7 +48,7 @@ public class Editor extends Activity {
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			AlertDialog dialog = null;
-			int dialogType = savedInstanceState.getInt(dialogTypeKey);
+			int dialogType = getArguments().getInt(dialogTypeKey);
 
 			switch (dialogType) {
 			case SAVE_DIALOG:
@@ -67,7 +68,7 @@ public class Editor extends Activity {
 			AlertDialog dialog;
 			AlertDialog.Builder saveDialogBuilder;
 			LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-			View dialogLayout = layoutInflater.inflate(R.layout.save_dialog,
+			final View dialogLayout = layoutInflater.inflate(R.layout.save_dialog,
 					(ViewGroup) getActivity().findViewById(R.layout.main),
 					false);
 
@@ -80,7 +81,7 @@ public class Editor extends Activity {
 								public void onClick(DialogInterface dialog,
 										int which) {
 									((Editor) getActivity())
-											.do_positive_click(dialog);
+											.do_positive_click(dialog, dialogLayout);
 								}
 							})
 					.setNegativeButton(R.string.cancel_button,
@@ -114,29 +115,27 @@ public class Editor extends Activity {
 		dialog.cancel();
 	}
 
-	protected void do_positive_click(DialogInterface dialog) {
-		TextView etFileName = (TextView) findViewById(R.id.filename);
+	protected void do_positive_click(DialogInterface dialog, View dialogLayout) {
+		TextView etFileName = (TextView) dialogLayout.findViewById(R.id.et_filename);
+		filename = etFileName.getText().toString();
 
 		if (filename == null) {
 		} else {
-			filename = etFileName.getText().toString();
 			Log.i(TAG, "The filename is " + filename);
 			performSaveFile(filename);
 			dialog.dismiss();
 		}
 	}
 
-	private void performSaveFile(String filename2) {
+	private void performSaveFile(String f) {
+		TextView tvFilename = (TextView) findViewById(R.id.filename);
+		tvFilename.setText(f);
+		
 		EditText et_content = (EditText) findViewById(R.id.et_content);
 		String content = et_content.getText().toString();
 
-		if (filename == null) {
-			showAlertDialog(SAVE_DIALOG);
-		}
-		File file = new File(getFilesDir() + filename);
-		OutputStream out = null;
 		try {
-			out = new BufferedOutputStream(new FileOutputStream(file));
+			FileOutputStream out = openFileOutput(f, Context.MODE_PRIVATE);
 			out.write(content.getBytes());
 			out.close();
 		} catch (FileNotFoundException e) {
