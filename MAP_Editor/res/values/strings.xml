@@ -5,5 +5,13 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_editor">Editor</string>
     <string name="filename">Untitled</string>
+    <string name="empty_filename">Untitled</string>
+    <string name="save_menu_item">Save</string>
+    <string name="new_menu_item">New</string>
+    <string name="load_menu_item">Load</string>
+    <string name="showpath_menu_item">Show Path</string>
+    <string name="quit_menu_item">Quit</string>
+    <string name="save_button">Save</string>
+    <string name="cancel_button">Cancel</string>
 
 </resources>
