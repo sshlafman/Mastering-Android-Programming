@@ -1,14 +1,11 @@
 package com.sshlafman.map_editor;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -38,6 +35,10 @@ public class Editor extends Activity {
 	private static final int LOAD_FILE_REQ_CODE = 234;
 
 	private String filename = null;
+
+	public String getFilename() {
+		return filename;
+	}
 
 	public static class AlertDialogFragment extends DialogFragment {
 
@@ -86,8 +87,9 @@ public class Editor extends Activity {
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
-									((Editor) getActivity()).do_positive_click(
-											dialog, dialogLayout);
+									((Editor) getActivity())
+											.save_dialog_positive_button_click(
+													dialog, dialogLayout);
 								}
 							})
 					.setNegativeButton(R.string.cancel_button,
@@ -96,7 +98,7 @@ public class Editor extends Activity {
 								public void onClick(DialogInterface dialog,
 										int which) {
 									((Editor) getActivity())
-											.do_negative_click(dialog);
+											.save_dialog_negative_click(dialog);
 								}
 							});
 
@@ -106,8 +108,29 @@ public class Editor extends Activity {
 		}
 
 		private AlertDialog create_showpath_dialog() {
-			// TODO Auto-generated method stub
-			return null;
+			AlertDialog.Builder showpathDialogBuilder = new AlertDialog.Builder(
+					getActivity());
+			
+			String pathString = getActivity().getFilesDir().toString();
+			String fileName = ((Editor)getActivity()).getFilename(); 
+			if (fileName != null) {
+				pathString += File.separator + fileName;
+			}
+
+			AlertDialog dialog = showpathDialogBuilder
+					.setMessage(pathString)
+					.setCancelable(false)
+					.setPositiveButton(R.string.ok_button,
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									((Editor) getActivity())
+											.showpath_dialog_positive_click(dialog);
+								}
+							}).create();
+
+			return dialog;
 		}
 	}
 
@@ -117,11 +140,8 @@ public class Editor extends Activity {
 		setContentView(R.layout.main);
 	}
 
-	protected void do_negative_click(DialogInterface dialog) {
-		dialog.cancel();
-	}
-
-	protected void do_positive_click(DialogInterface dialog, View dialogLayout) {
+	protected void save_dialog_positive_button_click(DialogInterface dialog,
+			View dialogLayout) {
 		TextView etFileName = (TextView) dialogLayout
 				.findViewById(R.id.et_filename);
 		filename = etFileName.getText().toString();
@@ -132,6 +152,14 @@ public class Editor extends Activity {
 			performSaveFile(filename);
 			dialog.dismiss();
 		}
+	}
+
+	protected void save_dialog_negative_click(DialogInterface dialog) {
+		dialog.cancel();
+	}
+
+	protected void showpath_dialog_positive_click(DialogInterface dialog) {
+		dialog.dismiss();
 	}
 
 	private void performSaveFile(String f) {
@@ -255,8 +283,7 @@ public class Editor extends Activity {
 	}
 
 	private void show_path() {
-		// TODO Auto-generated method stub
-
+		showAlertDialog(SHOWPATH_DIALOG);
 	}
 
 	private void quit() {
